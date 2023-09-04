@@ -1,17 +1,32 @@
 from django.shortcuts import render
-# from django.http import HttpResponse
+from utils.recipes.factory import make_recipe
+from .models import Recipe
 
 # Create your views here.
 
 
 # O Django é inteligente já para buscar o arquivo dentro da pasta templates
 def home(request):
+    recipes = Recipe.objects.filter(
+        is_published=True
+    ).order_by('-id')
     return render(request, "recipes/pages/home.html", context={
-        'name': 'Luiz Otávio',
+        'recipes': recipes,
+    })
+
+
+def category(request, category_id):
+    recipes = Recipe.objects.filter(
+        category__id=category_id,
+        is_published=True
+    ).order_by('-id')
+    return render(request, 'recipes/pages/category.html', context={
+        'recipes': recipes,
     })
 
 
 def recipe(request, id):
     return render(request, "recipes/pages/recipe-view.html", context={
-        'name': 'Luiz Otávio',
+        'recipe': make_recipe(),
+        'is_detail_page': True,
     })
