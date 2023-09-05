@@ -11,14 +11,16 @@
     </div>
 
     <div class="recipe-author">
-        <span class="recipe-author-item">
-            <i class="fas fa-user"></i>
-            {% if recipe.author.first_name %}
-                {{ recipe.author.first_name }} {{ recipe.author.last_name }}
-            {% else %}
-                {{ recipe.author.username }}
-            {% endif %}
-        </span>
+        {% if recipe.author is not None %}
+            <span class="recipe-author-item">
+                <i class="fas fa-user"></i>
+                {% if recipe.author.first_name %}
+                    {{ recipe.author.first_name }} {{ recipe.author.last_name }}
+                {% else %}
+                    {{ recipe.author.username }}
+                {% endif %}
+            </span>
+        {% endif %}
         <span class="recipe-author-item">
             <i class="fas fa-calendar-alt"></i>
             {{ recipe.created_at }}
@@ -63,7 +65,11 @@
 
     {% if is_detail_page is True %}
         <div class="preparation-steps">
-            {{ recipe.preparation_steps|linebreaks }}
+            {% if recipe.preparation_steps_is_html is True %}
+                {{ recipe.preparation_steps|safe }}
+            {% else %}
+                {{ recipe.preparation_steps|linebreaks }}
+            {% endif %}
         </div>
     {% endif %}
 

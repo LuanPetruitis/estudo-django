@@ -4,8 +4,13 @@
 
 {% block content %}
 <div class="main-content main-content-list container">
+    {% comment %} É como se fosse um if esse empty caso não tenha recitas ele executa o que está dentro do empty {% endcomment %}
     {% for recipe in recipes %}
-        {% include 'recipes/partials/recipe.html' %}
+    {% include 'recipes/partials/recipe.html' %}
+    {% empty %}
+        <div class="center m-y">
+            <h1>No recipes found here</h1>
+        </div>
     {% endfor %}
 </div>
 {% endblock content %}
